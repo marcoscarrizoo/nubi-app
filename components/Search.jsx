@@ -9,63 +9,86 @@ import {
 } from "react-native";
 import { Formik } from "formik";
 import Files from "./Files";
+import MaterialCommunityIcons from "react-native-vector-icons/Ionicons";
 
 export default function Search() {
   const [url, setURL] = useState("");
   const [resFromURL, setResFromURL] = useState("");
+  const [error, setError] = useState(false);
 
-  function handleRequest() {
+  console.log("url", url);
+
+  async function handleRequest() {
     try {
+      console.log(url);
       const api = url.slice(24);
-      fetch("https://run.mocky.io/v3/" + api )
-        .then((res) => res.json())
-        .then((data) => setResFromURL(data));
-      setURL("");
-    } 
-    catch (error) {
-      console.log(error, "error");
+      const apiResponse = await fetch("https://run.mocky.io/v3/" + api);
+      const apiJson = await apiResponse.json();
+      setResFromURL(apiJson);
+      setError(false);
+      setURL('')
+      return;
+    } catch (error) {
+      setError(true);
+      console.log(error);
     }
   }
 
-  function handleForm(e) {
-    e.preventDefault();
-    setURL("");
+  const refreshApi =() => {
+  return (
+    <View></View>
+  )
+    
   }
-
-  console.log("dataa", resFromURL);
-
   return (
     <View>
-      <Formik onSubmit={handleForm}>
+      <Formik>
         <View style={styles.form}>
+          <View style={{ margin: 5 }}>
+            <TouchableHighlight onPress={refreshApi}>
+              <MaterialCommunityIcons name="ios-refresh-outline" size={20} />
+            </TouchableHighlight>
+          </View>
           <TextInput
-            placeholder="Insertar URL"
+            placeholder="Insert URL"
+            clearTextOnFocus={true}
             style={styles.input}
             variant="outlined"
-            onChange={(e) => setURL(e.target.value)}
-            defaultValue={url}
+            onChangeText={(e) => setURL(e)}
+            value={url}
           />
           <Button
             onPress={handleRequest}
-            title="Buscar"
-            style={styles.button}
-            color="#841584"
+            title="Search"
+            color="rgb(25, 40, 170)"
           />
         </View>
       </Formik>
 
-      <Files response={resFromURL} />
+      {error === true ? (
+        <View style={{ marginLeft: 100 }}>
+          <Text style={{ color: "red" }}>API incorrecta</Text>
+        </View>
+      ) : (
+        <View></View>
+      )}
+      <Files responseFromApi={resFromURL} />
     </View>
   );
 }
 const styles = StyleSheet.create({
   input: {
-    height: 40,
+    maxHeight: 40,
+    maxWidth: 200,
     borderWidth: 1,
     padding: 10,
+    borderRadius: 3,
+    // border: '2px solid rgb(25, 40, 170)'
   },
   form: {
     display: "flex",
     flexDirection: "row",
+    justifyContent: "center",
+    marginTop: 100,
   },
 });
