@@ -12,17 +12,19 @@ export default function Files  ({ responseFromApi }) {
 const resType = () => {
   if(responseType === false) return setResponseType(true);
   setResponseType(false)
+  setResponseFile(false)
   
 }
 const resFile = () => {
  if(responseFile === false) return setResponseFile(true);
  setResponseFile(false)
-  
+
 }
 
 const resType1 = () => {
 if(responseType1 === false) return setResponseType1(true) ;
   setResponseType1(false)
+  setResponseFile1(false)
 }
 
 const resFile1 = () => {

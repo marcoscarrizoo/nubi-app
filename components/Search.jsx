@@ -35,10 +35,7 @@ export default function Search() {
   }
 
   const refreshApi =() => {
-  return (
-    <View></View>
-  )
-    
+  setResFromURL('')
   }
   return (
     <View>
@@ -72,7 +69,8 @@ export default function Search() {
       ) : (
         <View></View>
       )}
-      <Files responseFromApi={resFromURL} />
+      {resFromURL.length > 0 ? <Files responseFromApi={resFromURL} /> : <View></View>}
+      
     </View>
   );
 }
