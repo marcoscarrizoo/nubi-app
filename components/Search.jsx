@@ -16,17 +16,14 @@ export default function Search() {
   const [resFromURL, setResFromURL] = useState("");
   const [error, setError] = useState(false);
 
-  console.log("url", url);
-
   async function handleRequest() {
     try {
-      console.log(url);
       const api = url.slice(24);
       const apiResponse = await fetch("https://run.mocky.io/v3/" + api);
       const apiJson = await apiResponse.json();
       setResFromURL(apiJson);
       setError(false);
-      setURL('')
+      setURL("");
       return;
     } catch (error) {
       setError(true);
@@ -34,9 +31,9 @@ export default function Search() {
     }
   }
 
-  const refreshApi =() => {
-  setResFromURL('')
-  }
+  const refreshApi = () => {
+    setResFromURL("");
+  };
   return (
     <View>
       <Formik>
@@ -69,8 +66,11 @@ export default function Search() {
       ) : (
         <View></View>
       )}
-      {resFromURL.length > 0 ? <Files responseFromApi={resFromURL} /> : <View></View>}
-      
+      {resFromURL.length > 0 ? (
+        <Files responseFromApi={resFromURL} />
+      ) : (
+        <View></View>
+      )}
     </View>
   );
 }
@@ -81,7 +81,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
     borderRadius: 3,
-    // border: '2px solid rgb(25, 40, 170)'
   },
   form: {
     display: "flex",
